@@ -77,15 +77,32 @@ def get_linkedin_author_urn():
     return f"urn:li:person:{sub}"
 
 
-def fetch_approved_posts():
-    """Busca posts com Status = 'Aprovado' no Calendário Editorial."""
-    data = {
-        "filter": {
-            "property": "Status",
-            "select": {"equals": "Aprovado"}
-        },
-        "sorts": [{"property": "Data", "direction": "ascending"}]
-    }
+def fetch_approved_posts(only_today=False):
+    """Busca posts com Status = 'Aprovado' no Calendário Editorial.
+
+    Se only_today=True, filtra só posts cuja Data é hoje ou anterior
+    (para uso pelo GitHub Action diário).
+    """
+    today = datetime.utcnow().strftime("%Y-%m-%d")
+
+    if only_today:
+        data = {
+            "filter": {
+                "and": [
+                    {"property": "Status", "select": {"equals": "Aprovado"}},
+                    {"property": "Data", "date": {"on_or_before": today}}
+                ]
+            },
+            "sorts": [{"property": "Data", "direction": "ascending"}]
+        }
+    else:
+        data = {
+            "filter": {
+                "property": "Status",
+                "select": {"equals": "Aprovado"}
+            },
+            "sorts": [{"property": "Data", "direction": "ascending"}]
+        }
     r = notion_request(f"databases/{CALENDARIO_DB}/query", data)
     return r.get("results", [])
 
@@ -195,11 +212,15 @@ def publish_to_linkedin(author_urn, text, scheduled_at_ms=None, dry_run=False):
             "X-Restli-Protocol-Version": "2.0.0"
         }
     )
-    with urllib.request.urlopen(req, timeout=30) as r:
-        post_id = r.headers.get("x-restli-id") or r.headers.get("X-RestLi-Id", "")
-        if post_id:
-            return f"https://www.linkedin.com/feed/update/{post_id}/"
-        return "https://www.linkedin.com/feed/"
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            post_id = r.headers.get("x-restli-id") or r.headers.get("X-RestLi-Id", "")
+            if post_id:
+                return f"https://www.linkedin.com/feed/update/{post_id}/"
+            return "https://www.linkedin.com/feed/"
+    except urllib.error.HTTPError as e:
+        body = e.read().decode()
+        raise Exception(f"HTTP {e.code}: {body}")
 
 
 def mark_as_published(page_id, post_url):
@@ -217,6 +238,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true",
                         help="Simula sem publicar no LinkedIn nem alterar o Notion")
+    parser.add_argument("--today", action="store_true",
+                        help="Publica só posts com Data = hoje ou anterior (usado pelo GitHub Action)")
     args = parser.parse_args()
 
     # Validar tokens
@@ -229,8 +252,11 @@ def main():
         print("ERRO: NOTION_TOKEN não encontrado no .env")
         sys.exit(1)
 
+    modo_hoje = args.today
     print("\n[linkedin_post] Buscando posts aprovados no Notion...")
-    posts = fetch_approved_posts()
+    if modo_hoje:
+        print("  Modo: --today (só posts com Data = hoje ou anterior)")
+    posts = fetch_approved_posts(only_today=modo_hoje)
 
     if not posts:
         print("Nenhum post com status 'Aprovado' encontrado.")

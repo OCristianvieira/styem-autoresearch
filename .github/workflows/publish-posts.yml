@@ -1,0 +1,25 @@
+name: Publish LinkedIn Posts — 18h BRT
+
+on:
+  schedule:
+    - cron: '0 21 * * *'  # 18h BRT (21h UTC)
+  workflow_dispatch:       # disparo manual quando quiser
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Publicar posts aprovados no LinkedIn
+        env:
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          python scripts/linkedin_post.py --today
