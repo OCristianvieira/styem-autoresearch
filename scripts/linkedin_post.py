@@ -169,20 +169,34 @@ def publish_to_linkedin(author_urn, text, scheduled_at_ms=None, dry_run=False):
         print(json.dumps(payload, ensure_ascii=False, indent=2)[:500])
         return "https://www.linkedin.com/feed/ (dry-run)"
 
-    body = json.dumps(payload).encode()
+    # Novo payload para /rest/posts (API atual)
+    rest_payload = {
+        "author": author_urn,
+        "commentary": text,
+        "visibility": "PUBLIC",
+        "distribution": {
+            "feedDistribution": "MAIN_FEED",
+            "targetEntities": [],
+            "thirdPartyDistributionChannels": []
+        },
+        "lifecycleState": "PUBLISHED",
+        "isReshareDisabledByAuthor": False
+    }
+
+    body = json.dumps(rest_payload).encode()
     req = urllib.request.Request(
-        "https://api.linkedin.com/v2/ugcPosts",
+        "https://api.linkedin.com/rest/posts",
         data=body,
         method="POST",
         headers={
             "Authorization": f"Bearer {os.environ.get('LINKEDIN_ACCESS_TOKEN', '')}",
             "Content-Type": "application/json",
+            "LinkedIn-Version": "202501",
             "X-Restli-Protocol-Version": "2.0.0"
         }
     )
     with urllib.request.urlopen(req, timeout=30) as r:
         post_id = r.headers.get("x-restli-id") or r.headers.get("X-RestLi-Id", "")
-        # URL canônica do post
         if post_id:
             return f"https://www.linkedin.com/feed/update/{post_id}/"
         return "https://www.linkedin.com/feed/"
