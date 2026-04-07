@@ -1,0 +1,25 @@
+name: Daily Ideas — Twitter AI Radar
+
+on:
+  schedule:
+    - cron: '0 11 * * *'  # 8h BRT (11h UTC)
+  workflow_dispatch:       # disparo manual quando quiser
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Coletar tweets virais de IA e salvar no Notion
+        env:
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          python scripts/scrape_twitter.py --max 20
