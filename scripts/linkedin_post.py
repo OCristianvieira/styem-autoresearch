@@ -37,7 +37,7 @@ if ENV_PATH.exists():
             os.environ.setdefault(key.strip(), val.strip())
 
 # ID da database Calendário Editorial no Notion
-CALENDARIO_DB = "33b6588e-18c1-81ac-a8ed-e9e7ca7b8eff"
+CALENDARIO_DB = "33b6588e-18c1-81dd-9f1a-e991de7bd6eb"
 
 NOTION_HEADERS = {
     "Authorization": f"Bearer {os.environ.get('NOTION_TOKEN', '')}",
