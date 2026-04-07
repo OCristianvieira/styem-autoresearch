@@ -419,6 +419,8 @@ def main():
                         help="Simula sem publicar no LinkedIn nem alterar o Notion")
     parser.add_argument("--today", action="store_true",
                         help="Publica só posts com Data = hoje ou anterior (usado pelo GitHub Action)")
+    parser.add_argument("--one", action="store_true",
+                        help="Publica só 1 post por execução (o mais antigo aprovado). Usar junto com --today.")
     args = parser.parse_args()
 
     # Validar tokens
@@ -441,7 +443,12 @@ def main():
         print("Nenhum post com status 'Aprovado' encontrado.")
         return
 
-    print(f"{len(posts)} post(s) aprovado(s) encontrado(s).\n")
+    total = len(posts)
+    if args.one:
+        posts = posts[:1]
+        print(f"Modo --one: publicando 1 de {total} aprovado(s) na fila.\n")
+    else:
+        print(f"{total} post(s) aprovado(s) encontrado(s).\n")
 
     # Buscar URN do autor uma vez
     if not args.dry_run:
