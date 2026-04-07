@@ -1,1 +1,19 @@
 semana	data	plataforma	tipo_hook	formato	angulo	impressoes	likes	comentarios	compartilhamentos	taxa_eng	status	notas
+s-seed	2026-03-27	linkedin	reveal	post	autoridade	0	580	27	20	N/A	keep	"80% funcionários Anthropic usam Claude Code" — dado interno chocante + número absurdo ($150k/mês um eng) + empresa reconhecida
+s-seed	2026-03-24	linkedin	contrarian	post+video	provocacao	0	285	28	34	N/A	keep	"Todo CEO usa IA como desculpa pra demitir / Jensen Huang deu a real" — vídeo embed + posição forte + CTA pergunta
+s-seed	2026-03-25	linkedin	newsjack	post	cta_keyword	0	94	149	2	N/A	keep	"Alex Finn lab autônomo" — CTA LAB gerou 149 comentários absurdos. Maior comentários/likes ratio da base
+s-seed	2026-03-27	linkedin	how_to	post	educacao	0	91	6	8	N/A	keep	"Ensinei IA pra dezenas do zero — método 5 fases" — lista detalhada com prompt copiável + CTA engajamento
+s-seed	2026-03-27	linkedin	newsjack	post+video	criatividade	0	27	11	2	N/A	keep	"Suno 5.5 Wes Roth canto gutural mongol + DubStep" — vídeo embed + debate filosófico autoria
+s-seed	2026-04-06	linkedin	reveal	post	educacao	0	24	4	2	N/A	keep	"Qwen 2.5 13M downloads — não precisa pagar ChatGPT pra tudo" — número concreto + alternativa prática
+s-seed	2026-03-24	linkedin	humor	post	entretenimento	0	22	14	1	N/A	keep	"Momento humor verdade ou mentira?" — meme puro, alto comentários relativo
+s-seed	2026-04-03	linkedin	oferta	post	vendas	0	19	13	2	N/A	keep	"Orquestra Club R$97" — CTA ORQUESTRADOR, lista de espera, com Diego Alcantara mencionado
+s-seed	2026-03-23	linkedin	contrarian	post	bastidores	0	13	2	0	N/A	discard	"Infográfico com content swarm" — curto, CTA fraco ("me chama no direct")
+s-seed	2026-03-26	linkedin	newsjack	post+doc	educacao	0	12	0	0	N/A	discard	"Anthropic Economic Index março" — documento PDF, zero comentários apesar de dado relevante
+s-seed	2026-03-24	linkedin	newsjack	post+video	educacao	0	12	0	1	N/A	discard	"Claude controla computador" — vídeo demo, hook fraco ("acabou de liberar uma função")
+s-seed	2026-03-25	linkedin	newsjack	post	provocacao	0	9	5	1	N/A	discard	"OpenAI vai dobrar time pra 8k" — posição ambígua, P.S. sarcástico dilui a mensagem
+s-seed	2026-03-27	linkedin	construindo_publico	post	bastidores	0	8	0	0	N/A	discard	"Semana 31 — em abril provável que contrate" — atualização pessoal sem gancho
+s-seed	2026-03-24	linkedin	personagem	post	storytelling	0	5	0	1	N/A	discard	"Harby assistente IA escreveu o post" — conceito criativo mas não engajou, sem CTA claro
+s-seed	2026-03-26	linkedin	analogia	post	educacao	0	5	0	0	N/A	discard	"Receita 7/10 Karpathy autoresearch" — metáfora da receita afasta público B2B direto
+s-seed	2026-04-06	linkedin	newsjack	post	noticias	0	5	0	0	N/A	discard	"GPT-6 rumor data semana que vem" — recente, ainda acumulando
+s-seed	2026-04-06	linkedin	fomo	post	oferta	0	0	0	0	N/A	discard	"FOMO de IA / Orquestra Club" — publicado há 6h, ainda acumulando
+s-seed	2026-03-25	linkedin	newsjack	post	provocacao	0	1	0	1	N/A	discard	"Dell demite 11k Goldman Sachs relatório" — polêmico sem CTA, não engajou
