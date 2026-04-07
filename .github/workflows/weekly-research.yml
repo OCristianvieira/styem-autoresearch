@@ -1,0 +1,77 @@
+name: Weekly AutoResearch
+
+on:
+  schedule:
+    # Sexta-feira às 18h BRT (21h UTC)
+    - cron: '0 21 * * 5'
+  workflow_dispatch:
+    inputs:
+      cliente:
+        description: 'Cliente para rodar o research'
+        required: true
+        default: 'powerd'
+        type: choice
+        options:
+          - powerd
+          - fernando-maeda
+          - salva-tributo
+          - sim-carreira
+      semana:
+        description: 'Semana (ex: s17)'
+        required: true
+        default: 's17'
+
+jobs:
+  autoresearch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Anthropic SDK
+        run: pip install anthropic
+
+      - name: Run AutoResearch Agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLIENTE: ${{ github.event.inputs.cliente || 'powerd' }}
+          SEMANA: ${{ github.event.inputs.semana || 'auto' }}
+        run: python scripts/run_research.py
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "research(${{ env.CLIENTE }}): atualiza instalador baseado em dados da semana"
+          branch: autoresearch/${{ env.CLIENTE }}-${{ env.SEMANA }}
+          delete-branch: false
+          title: "AutoResearch — ${{ env.CLIENTE }} — ${{ env.SEMANA }}"
+          body: |
+            ## AutoResearch semanal — ${{ env.CLIENTE }}
+
+            Este PR foi gerado automaticamente pelo loop de auto-research.
+
+            **O que foi analisado:**
+            - Métricas do `performance/${{ env.CLIENTE }}.tsv`
+            - Instalador atual em `instaladores/${{ env.CLIENTE }}/`
+
+            **Como revisar:**
+            1. Leia o diff do instalador
+            2. Verifique a seção `## Hipótese aplicada` no instalador
+            3. Se concordar com a mudança → approve e merge
+            4. Se não concordar → close sem merge (o instalador original fica inalterado)
+
+            ---
+            *Gerado por `program.md` via Claude API*
+          labels: autoresearch
