@@ -82,7 +82,7 @@ def fetch_approved_posts():
     data = {
         "filter": {
             "property": "Status",
-            "status": {"equals": "Aprovado"}
+            "select": {"equals": "Aprovado"}
         },
         "sorts": [{"property": "Data", "direction": "ascending"}]
     }
@@ -94,45 +94,78 @@ def extract_post_content(page):
     """Extrai o texto do post a partir das propriedades do Notion."""
     props = page.get("properties", {})
 
-    # Tentar campo "Copy" (rich_text) primeiro, depois "Post"
-    for field in ["Copy", "Texto", "Conteúdo", "Post"]:
+    for field in ["Texto do Post", "Copy", "Texto", "Conteúdo"]:
         if field in props:
             prop = props[field]
-            ptype = prop.get("type")
-            if ptype == "rich_text":
-                parts = prop.get("rich_text", [])
-                text = "".join(p.get("plain_text", "") for p in parts)
-                if text.strip():
-                    return text.strip()
-            elif ptype == "title":
-                parts = prop.get("title", [])
-                text = "".join(p.get("plain_text", "") for p in parts)
-                if text.strip():
-                    return text.strip()
+            parts = prop.get("rich_text", [])
+            text = "".join(p.get("plain_text", "") for p in parts)
+            if text.strip():
+                return text.strip()
 
     return None
 
 
-def publish_to_linkedin(author_urn, text, dry_run=False):
-    """Publica um post de texto no LinkedIn. Retorna a URL do post."""
-    payload = {
-        "author": author_urn,
-        "lifecycleState": "PUBLISHED",
-        "specificContent": {
-            "com.linkedin.ugc.ShareContent": {
-                "shareCommentary": {
-                    "text": text
-                },
-                "shareMediaCategory": "NONE"
+def get_scheduled_time(page):
+    """Retorna datetime para publicação: data do Notion às 18h BRT (21h UTC).
+    Se a data já passou ou não existe, retorna None (publicar imediatamente)."""
+    props = page.get("properties", {})
+    date_prop = props.get("Data", {}).get("date")
+    if not date_prop:
+        return None
+
+    date_str = date_prop.get("start", "")[:10]  # "2026-04-08"
+    if not date_str:
+        return None
+
+    # 18h BRT = 21h UTC
+    scheduled = datetime.strptime(date_str, "%Y-%m-%d").replace(hour=21, minute=0, second=0)
+    now_utc = datetime.utcnow()
+
+    # Se já passou, publicar imediatamente
+    if scheduled <= now_utc:
+        return None
+
+    # LinkedIn espera Unix timestamp em milissegundos
+    import calendar
+    return calendar.timegm(scheduled.timetuple()) * 1000
+
+
+def publish_to_linkedin(author_urn, text, scheduled_at_ms=None, dry_run=False):
+    """Publica ou agenda um post no LinkedIn. Retorna a URL do post."""
+    if scheduled_at_ms:
+        lifecycle = "DRAFT"
+        payload = {
+            "author": author_urn,
+            "lifecycleState": lifecycle,
+            "scheduledPublishTime": scheduled_at_ms,
+            "specificContent": {
+                "com.linkedin.ugc.ShareContent": {
+                    "shareCommentary": {"text": text},
+                    "shareMediaCategory": "NONE"
+                }
+            },
+            "visibility": {
+                "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
             }
-        },
-        "visibility": {
-            "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
         }
-    }
+    else:
+        payload = {
+            "author": author_urn,
+            "lifecycleState": "PUBLISHED",
+            "specificContent": {
+                "com.linkedin.ugc.ShareContent": {
+                    "shareCommentary": {"text": text},
+                    "shareMediaCategory": "NONE"
+                }
+            },
+            "visibility": {
+                "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
+            }
+        }
 
     if dry_run:
-        print(f"\n[dry-run] Payload que seria enviado:")
+        modo = "AGENDADO" if scheduled_at_ms else "IMEDIATO"
+        print(f"\n[dry-run] Modo: {modo}")
         print(json.dumps(payload, ensure_ascii=False, indent=2)[:500])
         return "https://www.linkedin.com/feed/ (dry-run)"
 
@@ -229,12 +262,20 @@ def main():
             continue
 
         try:
-            post_url = publish_to_linkedin(author_urn, text, dry_run=False)
+            scheduled_at_ms = get_scheduled_time(page)
+            post_url = publish_to_linkedin(author_urn, text, scheduled_at_ms=scheduled_at_ms, dry_run=False)
             mark_as_published(page_id, post_url)
-            print(f"    ✅ Publicado: {post_url}\n")
+            if scheduled_at_ms:
+                from datetime import timezone
+                import calendar
+                ts = scheduled_at_ms // 1000
+                dt = datetime.utcfromtimestamp(ts)
+                print(f"    📅 Agendado para {dt.strftime('%d/%m/%Y às 18h BRT')}: {post_url}\n")
+            else:
+                print(f"    ✅ Publicado imediatamente: {post_url}\n")
             publicados += 1
         except Exception as e:
-            print(f"    ✗ Erro ao publicar: {e}\n")
+            print(f"    ✗ Erro: {e}\n")
             erros += 1
 
     if not args.dry_run:
