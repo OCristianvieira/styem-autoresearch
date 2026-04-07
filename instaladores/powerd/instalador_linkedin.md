@@ -1,6 +1,15 @@
 # INSTALADOR LINKEDIN — CRISTIAN VIEIRA
 ## Powerd | Automações no-code para escala
-**Versão:** 8.1 | **Última atualização:** Março 2026
+**Versão:** 8.2 | **Última atualização:** Abril 2026 (AutoResearch ciclo seed)
+
+---
+
+## 🔬 HIPÓTESES ATIVAS — AUTORESEARCH
+
+| Semana | Hipótese | Status |
+|---|---|---|
+| seed (abr/2026) | Hook com dado interno chocante de empresa conhecida + implicação prática direta gera 5x mais reach que newsjack genérico | 🔬 testando |
+| seed (abr/2026) | CTA keyword em maiúsculas (ex: LAB, ORQUESTRADOR) gera volume de comentários desproporcional ao reach | ✅ confirmado (94 likes → 149 comentários) |
 
 ---
 
@@ -218,40 +227,54 @@ Se você visse essa informação, mandaria imediatamente no WhatsApp pra um amig
 
 ## OS 6 ARQUÉTIPOS DE HOOK
 
-Antes de escrever qualquer post, escolha 1 arquétipo:
+Antes de escrever qualquer post, escolha 1 arquétipo.
 
-**1. FUTURISTA (Fortuneteller)**
-- Template: "Isso [X novo] vai mudar como [Y pessoas] fazem [Z]..."
-- Quando usar: Novidade no mercado, mudança de indústria
-- Posicionamento: Quem prevê tendências
+> **Hierarquia validada por dados reais (18 posts, abr/2026):**
+> Top tier: INSIDER > CONTRÁRIO+vídeo > PROFESSOR com CTA keyword > PROFESSOR com lista
+> Descartado: FUTURISTA sem âncora, personagem falando em 1ª pessoa
 
-**2. EXPERIMENTADOR (Experimenter)**
-- Template: "Eu fiz [X] pra conseguir [Y resultado]... deixa eu mostrar"
+**1. INSIDER (Investigator)** ✅ VALIDADO — maior reach médio
+- Template: "O que a própria [empresa conhecida] tá fazendo internamente mostra que [crença comum] está errada 👇"
+- Quando usar: Você tem um dado interno ou comportamento de empresa conhecida que contradiz o que o mercado acredita
+- Posicionamento: Fonte conectada, insider com acesso a informação que outros não têm
+- Exemplo validado (580 likes): "O que a própria equipe da Anthropic tá fazendo internamente mostra que a maioria das empresas ainda usa IA do jeito errado 👇"
+- Por que funciona: número absurdo ($150k/mês, um engenheiro) + empresa que o público respeita + implicação prática imediata
+
+**2. CONTRÁRIO (Contrarian)** ✅ VALIDADO — melhor combo com vídeo
+- Template: "Todo [X autoridade] tá usando [Y] como desculpa pra [Z]. O [nome famoso] acabou de dar a real do porquê. 👇"
+- Quando usar: Opinião forte de CEO/autoridade que contraria narrativa dominante. Funciona melhor com vídeo embed.
+- Posicionamento: POVs únicos, opinativo com fonte de autoridade externa
+- Exemplo validado (285 likes + 34 shares): "Todo CEO tá usando a IA como desculpa pra cortar custo e demitir. O Jensen Huang (CEO da NVIDIA) acabou de dar a real do porquê. 👇"
+- Por que funciona: posição forte + CEO famoso como âncora + vídeo + pergunta CTA genuína
+
+**3. PROFESSOR (Teacher)** ✅ VALIDADO — melhor para salvamentos e CTA keyword
+- Template: "[Eu fiz/Ensinei] [X pessoas/ação] [contexto]. Esse método funciona toda vez. 👇"
+- Quando usar: Breakdown de método próprio com lista numerada + prompt copiável dentro do post
+- Posicionamento: Especialista que já fez, não teórico
+- Exemplo validado (91 likes + 8 shares): "Ensinei IA pra dezenas de pessoas do zero. Esse método funciona toda vez. 👇"
+- Por que funciona: prompt copiável dentro do post aumenta salvamentos, CTA de pergunta genuína
+
+**4. EXPERIMENTADOR (Experimenter)**
+- Template: "Eu fiz [X] pra conseguir [Y resultado]... deixa eu mostrar 👇"
 - Quando usar: Você testou algo novo primeiro
 - Posicionamento: Peer-to-peer, colega não guru
 
-**3. PROFESSOR (Teacher)**
-- Template: "[X pessoa] conseguiu [Y resultado] usando [Z método]..."
-- Quando usar: Breakdown de case de outra pessoa
-- Posicionamento: Especialista, autoridade
-
-**4. VISUAL (Magician)**
-- Template: "Olha [X] ali... isso é [Y explicação]"
-- Quando usar: Tem print/visual compelling
+**5. VISUAL (Magician)**
+- Template: "Olha [X] ali... isso é [Y explicação] 👇"
+- Quando usar: Tem print/visual ou vídeo demo compelling
 - Posicionamento: Parar scroll instantaneamente
 
-**5. INSIDER (Investigator)**
-- Template: "Descobri algo em [X] que muda a forma de fazer [Y]"
-- Quando usar: Descoberta que maioria desconhece
-- Posicionamento: Fonte conectada, insider
-
-**6. CONTRÁRIO (Contrarian)**
-- Template: "Todo mundo acha que [X], mas não tem nada a ver"
-- Quando usar: Opinião forte contra senso comum
-- Posicionamento: POVs únicos, opinativo
+**6. FUTURISTA (Fortuneteller)** ⚠️ CUIDADO — só funciona com âncora de empresa conhecida
+- Template: "Isso [X novo da empresa Y] vai mudar como [Z pessoas] fazem [W] 👇"
+- Quando usar: Novidade de empresa reconhecida, não previsão abstrata. Sem âncora real → não engaja.
+- Posicionamento: Quem prevê tendências com base em dados concretos, não especulação
+- Descartado quando: hook genérico de "vai mudar tudo" sem número ou empresa concreta
 
 **Técnica de empilhamento:**
-Criadores top combinam arquétipos. Ex: Começam com visual (#4) e transicionam pro contrário (#6).
+Criadores top combinam arquétipos. Melhor combo validado: INSIDER (#1) + CONTRÁRIO (#2) no mesmo post.
+
+**Regra da âncora externa (nova — validada pelos dados):**
+O hook deve partir de uma empresa conhecida ou pessoa pública como âncora, não do produto diretamente. O produto (Claude Code, n8n, Powerd) aparece como solução no meio do post, nunca no hook. Posts que começam pelo produto ficaram abaixo da média.
 
 **Indicar arquétipo na entrega:**
 Sempre informar qual arquétipo foi usado no post.
@@ -506,6 +529,44 @@ Termina com 👇 para puxar o scroll. O final usa convite orgânico: "e eu vou m
 - ❌ "O que você faria no meu lugar?"
 - ❌ "Qual [X] você testaria primeiro?" (CTA genérico de engajamento)
 - ❌ P.S. explicando o óbvio ou resumindo o post
+
+---
+
+## ✅ CTA KEYWORD — REGRA OBRIGATÓRIA (mínimo 1x por semana)
+
+Validado pelos dados: post com CTA keyword teve 149 comentários com apenas 94 likes — maior ratio comentários/likes de toda a base.
+
+**Formato obrigatório:**
+```
+👉 Comenta [PALAVRA] aqui embaixo que te mando no direct.
+```
+
+A palavra deve estar em MAIÚSCULAS, ser curta (1 palavra) e relacionada ao tema do post.
+
+**Exemplos validados:**
+- "Comenta LAB que mando o post completo do Alex no privado"
+- "Comenta ORQUESTRADOR aqui embaixo que te mando no direct"
+- "Comenta STACK que mando no direct"
+
+**Regra:** Em toda semana de 5 posts, pelo menos 1 deve ter CTA keyword. Não é opcional.
+
+---
+
+## ✅ P.S. COM DADO EXTRA — PADRÃO VALIDADO
+
+P.S. fraco: resumo do post, conselho genérico, sarcasmo que dilui a posição.
+
+P.S. forte: dado adicional surpreendente ou consequência concreta que reforça a posição com número.
+
+**Exemplos validados (posts que performaram):**
+- "P.S.: o susto de ver uma fatura alta de API passa rápido. O susto de ver o concorrente lançar 50 novidades em dois meses, não."
+- "P.S.: a Nvidia adicionou 500 bilhões em pedidos novos em 5 meses. Eles não tão demitindo ninguém. Estão contratando."
+
+**Exemplos que não funcionaram:**
+- "P.S.: a matéria saiu hoje na CNBC, realmente é incrível o poder da narrativa dos ai bros." (sarcástico, dilui posição)
+- P.S. que apenas repete a conclusão do post (redundante)
+
+**Fórmula:** P.S. deve trazer 1 dado concreto novo (número, empresa, prazo) que o leitor não viu no corpo do post e que reforça — não explica — a posição central.
 
 ## Formatação de IA
 
